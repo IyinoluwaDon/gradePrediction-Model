@@ -1,3 +1,5 @@
+> Current runtime compatibility and evaluation limitations are documented in [VALIDATION.md](VALIDATION.md). The saved sklearn artifacts require version 1.7.2.
+
 # 🎓 Student Grade Prediction System
 
 A machine learning web application that predicts whether a secondary school student will **pass or fail** their final Mathematics or Portuguese exam — based on demographic, family, and lifestyle attributes, **without relying on prior grade records**.
