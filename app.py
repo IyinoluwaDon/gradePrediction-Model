@@ -1,3 +1,5 @@
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent
 # ─────────────────────────────────────────────────────────────────────────────
 # app.py — Student Grade Prediction System
 # Iyinoluwa Don-Taiwo | McPherson University
@@ -81,7 +83,7 @@ FEATURE_ORDER = [
 @st.cache_data
 def load_data(subject):
     filename = 'student-mat.csv' if subject == 'Mathematics' else 'student-por.csv'
-    path = os.path.join('data', filename)
+    path = BASE_DIR / 'data' / filename
     if not os.path.exists(path):
         st.error(f"Dataset not found at '{path}'. Make sure data/ contains both CSV files.")
         st.stop()
@@ -119,20 +121,26 @@ def load_models(subject):
     model_keys = ['logistic_regression', 'random_forest', 'xgboost', 'svm', 'knn', 'decision_tree']
     models = {}
     for key in model_keys:
-        path = os.path.join('models', f'{prefix}_{key}.pkl')
+        path = BASE_DIR / 'models' / f'{prefix}_{key}.pkl'
         if os.path.exists(path):
-            with open(path, 'rb') as f:
-                models[key.replace('_', ' ').title()] = pickle.load(f)
+            try:
+                with open(path, 'rb') as f:
+                    models[key.replace('_', ' ').title()] = pickle.load(f)
+            except (ImportError, AttributeError, ValueError, EOFError, pickle.UnpicklingError) as exc:
+                st.warning(f'{key} is unavailable with this dependency environment: {type(exc).__name__}')
     return models
 
 
 @st.cache_resource
 def load_scaler(subject):
     prefix = 'mat' if subject == 'Mathematics' else 'por'
-    path = os.path.join('models', f'{prefix}_scaler.pkl')
+    path = BASE_DIR / 'models' / f'{prefix}_scaler.pkl'
     if os.path.exists(path):
-        with open(path, 'rb') as f:
-            return pickle.load(f)
+        try:
+            with open(path, 'rb') as f:
+                return pickle.load(f)
+        except (ImportError, AttributeError, ValueError, EOFError, pickle.UnpicklingError) as exc:
+            st.warning(f'Scaler unavailable: {type(exc).__name__}')
     return None
 
 
