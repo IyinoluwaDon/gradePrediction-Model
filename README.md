@@ -1,34 +1,14 @@
 # Student Grade Prediction Explorer
 
-A Streamlit educational application that explores student records and compares saved models for a pass/fail target derived from the final grade. It includes separate mathematics and Portuguese model artifacts.
+A Streamlit application and notebook project using the UCI Student Performance data for mathematics and Portuguese courses. The target is derived from final grade `G3`: scores of 10/20 or higher are Pass and scores below 10 are Fail. The workflow compares logistic regression and random forest baselines and includes an XGBoost classifier for the extended experiments; saved estimators and preprocessing artifacts power the prediction interface.
 
-## What is included
+`app.py` presents exploration, model comparison, and prediction pages. `notebook/` contains the analysis and training workflow; `requirements.txt` pins the app stack; `VALIDATION.md` documents the artifact checks.
 
-- Data exploration and model-comparison pages
-- Prediction interface using saved preprocessing/model artifacts
-- Smoke check for Streamlit startup and pinned model dependencies
-
-## Run locally
+## Run
 
 ```sh
 python -m pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Verify
-
-The GitHub Actions workflow performs a Streamlit app smoke check. To reproduce model evaluation, inspect and run the notebooks with their data and pinned requirements; evaluation leakage must be addressed first.
-
-## Repository map
-
-`app.py` contains the Streamlit interface. `notebook/` contains the analysis and training work. `requirements.txt` records app dependencies; `VALIDATION.md` describes artifact checks.
-
-## Evidence and limitations
-
-The app smoke check passed locally and saved models were exercised with the pinned scikit-learn/XGBoost stack. These checks do not independently validate student-outcome prediction.
-
-Historical student data and saved artifacts require provenance/licensing review. Preprocessing leakage and the absence of an independent cohort evaluation limit the reported metrics. Do not use predictions for admissions, discipline or other consequential decisions.
-
-## License
-
-No repository license file is included. Unless the project owner adds a license, do not assume the code, data or model artifacts may be redistributed or reused. Verify third-party data and model terms separately.
+The notebook encodes categorical fields and trains/evaluates the classifiers on student-course records. `notebook/model.ipynb` documents the target construction, feature choices, model comparisons, and saved artifacts for both subject datasets.
